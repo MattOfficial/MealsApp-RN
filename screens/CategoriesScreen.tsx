@@ -24,13 +24,7 @@ export default function CategoriesScreen(props: ICategoriesScreenProps) {
     return (
       <TouchableComponent
         onPress={() =>
-          props.navigation.navigate({
-            routeName: "CategoryMeals",
-            key: itemData.id,
-            params: {
-              categoryId: itemData.id,
-            },
-          })
+          props.navigation.navigate("CategoryMeals", { id: itemData.id })
         }
       >
         <View style={styles.gridItems}>

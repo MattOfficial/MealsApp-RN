@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { enableScreens } from "react-native-screens";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from "@react-navigation/native";
 import MealStack from "./navigation/MealsNavigator";
+
+enableScreens();
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -29,7 +32,7 @@ export default function App() {
     <NavigationContainer>
       <MealStack />
     </NavigationContainer>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
