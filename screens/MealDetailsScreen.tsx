@@ -1,12 +1,18 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 
-export interface IMealDetailsScreenProps {}
+export interface IMealDetailsScreenProps {
+  navigation: any;
+}
 
 export default function MealDetailsScreen(props: IMealDetailsScreenProps) {
   return (
     <View style={styles.screen}>
       <Text>MealDetails screen</Text>
+      <Button
+        title="Back to categories"
+        onPress={() => props.navigation.popToTop()}
+      />
     </View>
   );
 }
