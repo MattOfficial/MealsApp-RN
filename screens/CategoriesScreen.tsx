@@ -1,20 +1,51 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  Platform,
+} from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+
+import { CATEGORIES } from "../data/DummyData";
+import Category from "../model/category";
 
 export interface ICategoriesScreenProps {
   navigation: any;
 }
 
 export default function CategoriesScreen(props: ICategoriesScreenProps) {
+  const TouchableComponent: any =
+    Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
+
+  const renderGridItem = (itemData: Category) => {
+    return (
+      <TouchableComponent
+        onPress={() =>
+          props.navigation.navigate({
+            routeName: "CategoryMeals",
+            key: itemData.id,
+            params: {
+              categoryId: itemData.id,
+            },
+          })
+        }
+      >
+        <View style={styles.gridItems}>
+          <Text>{itemData.title}</Text>
+        </View>
+      </TouchableComponent>
+    );
+  };
+
   return (
-    <View style={styles.screen}>
-      <Text>Categories screen</Text>
-      <Button
-        title="Go to Meals!"
-        onPress={() => props.navigation.navigate("CategoryMeals")}
-      />
-    </View>
+    <FlatList
+      data={CATEGORIES}
+      renderItem={(itemData) => renderGridItem(itemData.item)}
+      numColumns={2}
+    />
   );
 }
 
@@ -23,5 +54,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  gridItems: {
+    flex: 1,
+    margin: 15,
+    height: 150,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
