@@ -27,8 +27,24 @@ export default function CategoriesScreen(props: ICategoriesScreenProps) {
           props.navigation.navigate("CategoryMeals", { id: itemData.id })
         }
       >
-        <View style={styles.gridItems}>
-          <Text>{itemData.title}</Text>
+        <View
+          style={{
+            ...styles.gridItems,
+            borderWidth: 1,
+            backgroundColor: itemData.color,
+          }}
+        >
+          <Text
+            numberOfLines={2}
+            style={{
+              color: "black",
+              fontFamily: "open-sans-bold",
+              fontSize: 22,
+              textAlign: "right",
+            }}
+          >
+            {itemData.title}
+          </Text>
         </View>
       </TouchableComponent>
     );
@@ -53,7 +69,14 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 15,
     height: 150,
-    alignItems: "center",
-    justifyContent: "center",
+    padding: 15,
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    borderRadius: 10,
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 10,
+    elevation: 3,
   },
 });
