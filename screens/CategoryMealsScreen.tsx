@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button, Platform } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import MealItem from "../components/MealItem";
 import Colors from "../constants/Colors";
 import { CATEGORIES, MEALS } from "../data/DummyData";
 import Meal from "../model/meal";
@@ -36,11 +37,14 @@ export default function CategoryMealsScreen(props: ICategoryMealsScreenProps) {
     });
   }, [props.navigation]);
 
-  const renderMealItem = (item: any) => {
+  const renderMealItem = (item: Meal) => {
     return (
-      <View>
-        <Text>{item.title}</Text>
-      </View>
+      <MealItem
+        mealItem={item}
+        onSelect={() => {
+          console.log(`${item.title} selected.`);
+        }}
+      />
     );
   };
 
@@ -49,6 +53,7 @@ export default function CategoryMealsScreen(props: ICategoryMealsScreenProps) {
       <FlatList
         data={meals}
         renderItem={(itemData) => renderMealItem(itemData.item)}
+        style={styles.listStyle}
       />
     </View>
   );
@@ -59,5 +64,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  listStyle: {
+    width: "100%",
   },
 });
