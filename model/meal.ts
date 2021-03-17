@@ -5,7 +5,7 @@ export default class Meal {
   afforability: string;
   complexity: string;
   imageUrl: string;
-  duration: string;
+  duration: number;
   ingredient: string[];
   steps: string[];
   isGlutenFree: boolean;
@@ -20,7 +20,7 @@ export default class Meal {
     afforability: string,
     complexity: string,
     imageUrl: string,
-    duration: string,
+    duration: number,
     ingredient: string[],
     steps: string[],
     isGlutenFree: boolean,

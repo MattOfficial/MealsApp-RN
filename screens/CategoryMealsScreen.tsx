@@ -42,7 +42,10 @@ export default function CategoryMealsScreen(props: ICategoryMealsScreenProps) {
       <MealItem
         mealItem={item}
         onSelect={() => {
-          console.log(`${item.title} selected.`);
+          props.navigation.navigate("MealDetails", {
+            id: item.id,
+            category: props.route.params.id,
+          });
         }}
       />
     );
