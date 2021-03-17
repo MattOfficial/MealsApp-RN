@@ -39,6 +39,9 @@ export default function MealDetailsScreen(props: IMealDetailsScreenProps) {
           <Item
             title="Favourites"
             iconName="ios-star"
+            color="#ccc"
+            //@ts-ignore
+            size={23}
             onPress={() => {
               console.log("Marked as favorites!");
             }}

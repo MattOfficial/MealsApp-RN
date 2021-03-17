@@ -1,19 +1,23 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import CategoriesScreen from "../screens/CategoriesScreen";
-import CategoryMealsScreen from "../screens/CategoryMealsScreen";
-import MealDetailsScreen from "../screens/MealDetailsScreen";
-import { StyleSheet, Platform } from "react-native";
+import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import MealDetailsScreen from "../screens/MealDetailsScreen";
+import CategoryMealsScreen from "../screens/CategoryMealsScreen";
+import CategoriesScreen from "../screens/CategoriesScreen";
 import FavouritesScreen from "../screens/Favourites";
+import FiltersScreen from "../screens/FilterScreen";
 
 const MealsNavigator = createStackNavigator();
 const FavouriteStack = createStackNavigator();
+const FilterNavigator = createStackNavigator();
 const TabsNavigator = createBottomTabNavigator();
 const TabsNavigatorAndroid = createMaterialBottomTabNavigator();
+const MainNavigator = createDrawerNavigator();
 
 const stackHeader = {
   headerStyle: {
@@ -46,6 +50,18 @@ const MealStackNavigator = () => {
   );
 };
 
+const FilterNav = () => {
+  return (
+    <FilterNavigator.Navigator screenOptions={stackHeader}>
+      <FilterNavigator.Screen
+        name="FilterScreen"
+        component={FiltersScreen}
+        options={{ title: "Filters", headerTitleAlign: "center" }}
+      />
+    </FilterNavigator.Navigator>
+  );
+};
+
 const FavouritesNav = () => {
   return (
     <FavouriteStack.Navigator screenOptions={stackHeader}>
@@ -58,7 +74,7 @@ const FavouritesNav = () => {
   );
 };
 
-const IosNav = (
+const IosNav = () => (
   <TabsNavigator.Navigator
     initialRouteName="Home"
     tabBarOptions={{ activeTintColor: Colors.accentColor }}
@@ -83,7 +99,7 @@ const IosNav = (
   </TabsNavigator.Navigator>
 );
 
-const AndroidNav = (
+const AndroidNav = () => (
   <TabsNavigatorAndroid.Navigator
     shifting={true}
     initialRouteName="Home"
@@ -123,5 +139,34 @@ const AndroidNav = (
 );
 
 export default function MealStack() {
-  return Platform.OS === "ios" ? IosNav : AndroidNav;
+  return (
+    <MainNavigator.Navigator
+      drawerContentOptions={{
+        activeTintColor: Colors.accentColor,
+      }}
+    >
+      <MainNavigator.Screen
+        name="MealFavs"
+        options={{
+          title: "Meals",
+          drawerIcon: ({ focused, color }) => {
+            return (
+              <Ionicons name="ios-restaurant-outline" size={23} color={color} />
+            );
+          },
+        }}
+        component={Platform.OS === "ios" ? IosNav : AndroidNav}
+      />
+      <MainNavigator.Screen
+        options={{
+          title: "Filters",
+          drawerIcon: ({ focused, color }) => {
+            return <Ionicons name="filter-sharp" size={23} color={color} />;
+          },
+        }}
+        name="Filters"
+        component={FilterNav}
+      />
+    </MainNavigator.Navigator>
+  );
 }

@@ -9,8 +9,8 @@ export default function CustomHeaderButton(props: any) {
     <HeaderButton
       {...props}
       IconComponent={Ionicons}
-      iconSize={23}
-      color={Platform.OS === "ios" ? Colors.primaryColor : "black"}
+      iconSize={props.size}
+      color={Platform.OS === "ios" ? Colors.primaryColor : props.color}
     />
   );
 }

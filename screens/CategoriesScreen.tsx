@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   Platform,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../components/CustomHeaderButton";
 
 import { CATEGORIES } from "../data/DummyData";
 import Category from "../model/category";
@@ -17,6 +19,25 @@ export interface ICategoriesScreenProps {
 }
 
 export default function CategoriesScreen(props: ICategoriesScreenProps) {
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerLeft: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Menu"
+            color="#f5f5f5"
+            //@ts-ignore
+            size={25}
+            iconName="ios-menu"
+            onPress={() => {
+              props.navigation.toggleDrawer();
+            }}
+          />
+        </HeaderButtons>
+      ),
+    });
+  }, [props.navigation]);
+
   const TouchableComponent: any =
     Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
