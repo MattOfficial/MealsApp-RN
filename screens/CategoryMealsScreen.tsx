@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, Platform } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import MealItem from "../components/MealItem";
-import Colors from "../constants/Colors";
+import { Platform } from "react-native";
+import MealList from "../components/MealList";
 import { CATEGORIES, MEALS } from "../data/DummyData";
 import Meal from "../model/meal";
 
@@ -37,38 +35,11 @@ export default function CategoryMealsScreen(props: ICategoryMealsScreenProps) {
     });
   }, [props.navigation]);
 
-  const renderMealItem = (item: Meal) => {
-    return (
-      <MealItem
-        mealItem={item}
-        onSelect={() => {
-          props.navigation.navigate("MealDetails", {
-            id: item.id,
-            category: props.route.params.id,
-          });
-        }}
-      />
-    );
-  };
-
   return (
-    <View style={styles.screen}>
-      <FlatList
-        data={meals}
-        renderItem={(itemData) => renderMealItem(itemData.item)}
-        style={styles.listStyle}
-      />
-    </View>
+    <MealList
+      meals={meals!}
+      navigation={props.navigation}
+      route={props.route}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  listStyle: {
-    width: "100%",
-  },
-});

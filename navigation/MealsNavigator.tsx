@@ -11,17 +11,22 @@ import Colors from "../constants/Colors";
 import FavouritesScreen from "../screens/Favourites";
 
 const MealsNavigator = createStackNavigator();
+const FavouriteStack = createStackNavigator();
 const TabsNavigator = createBottomTabNavigator();
 const TabsNavigatorAndroid = createMaterialBottomTabNavigator();
 
+const stackHeader = {
+  headerStyle: {
+    backgroundColor: Platform.OS === "android" ? Colors.primaryColor : "",
+  },
+  headerTitleStyle: {
+    color: Platform.OS === "android" ? "white" : Colors.primaryColor,
+  },
+};
+
 const MealStackNavigator = () => {
   return (
-    <MealsNavigator.Navigator
-      screenOptions={{
-        headerStyle: styles.headerStyle,
-        headerTitleStyle: styles.headerTitleStyle,
-      }}
-    >
+    <MealsNavigator.Navigator screenOptions={stackHeader}>
       <MealsNavigator.Screen
         name="Categories"
         component={CategoriesScreen}
@@ -38,6 +43,18 @@ const MealStackNavigator = () => {
         options={{ title: "Details", headerTitleAlign: "center" }}
       />
     </MealsNavigator.Navigator>
+  );
+};
+
+const FavouritesNav = () => {
+  return (
+    <FavouriteStack.Navigator screenOptions={stackHeader}>
+      <FavouriteStack.Screen
+        name="FavouriteScreen"
+        component={FavouritesScreen}
+        options={{ title: "Favourites", headerTitleAlign: "center" }}
+      />
+    </FavouriteStack.Navigator>
   );
 };
 
@@ -62,7 +79,7 @@ const IosNav = (
     })}
   >
     <TabsNavigator.Screen name="Home" component={MealStackNavigator} />
-    <TabsNavigator.Screen name="Favourites" component={FavouritesScreen} />
+    <TabsNavigator.Screen name="Favourites" component={FavouritesNav} />
   </TabsNavigator.Navigator>
 );
 
@@ -89,7 +106,7 @@ const AndroidNav = (
     />
     <TabsNavigatorAndroid.Screen
       name="Favourites"
-      component={FavouritesScreen}
+      component={FavouritesNav}
       options={{
         tabBarLabel: "",
         tabBarIcon: ({ focused, color }) => (
@@ -108,12 +125,3 @@ const AndroidNav = (
 export default function MealStack() {
   return Platform.OS === "ios" ? IosNav : AndroidNav;
 }
-
-const styles = StyleSheet.create({
-  headerStyle: {
-    backgroundColor: Platform.OS === "android" ? Colors.primaryColor : "",
-  },
-  headerTitleStyle: {
-    color: Platform.OS === "android" ? "white" : Colors.primaryColor,
-  },
-});
