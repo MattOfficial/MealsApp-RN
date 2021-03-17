@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button, Platform } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../components/CustomHeaderButton";
 import { CATEGORIES, MEALS } from "../data/DummyData";
 import Category from "../model/category";
 import Meal from "../model/meal";
@@ -33,11 +35,15 @@ export default function MealDetailsScreen(props: IMealDetailsScreenProps) {
         color: Platform.OS === "android" ? "black" : primaryMealCategory?.color,
       },
       headerRight: () => (
-        <Button
-          onPress={() => alert("This is a button!")}
-          title="Info"
-          color="#fff"
-        />
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Favourites"
+            iconName="ios-star"
+            onPress={() => {
+              console.log("Marked as favorites!");
+            }}
+          />
+        </HeaderButtons>
       ),
     });
   }, [props.navigation]);

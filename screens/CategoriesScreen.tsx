@@ -73,10 +73,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "flex-end",
     borderRadius: 10,
+    overflow:
+      Platform.OS === "android" && Platform.Version >= 21
+        ? "hidden"
+        : "visible",
     shadowColor: "black",
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 10,
-    elevation: 3,
+    elevation: 5,
   },
 });
