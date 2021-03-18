@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Switch, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/CustomHeaderButton";
@@ -20,6 +20,21 @@ export default function FiltersScreen(props: IFiltersScreenProps) {
   const [isVegan, setIsVegan] = useState<boolean>(false);
   const [isVegeterian, setIsVegeterian] = useState<boolean>(false);
 
+  const saveFilters = useCallback(() => {
+    const appliedFilters = {
+      glutenFree: isGlutenFree,
+      lactoseFree: isLactoseFree,
+      vegan: isVegan,
+      vegeterian: isVegeterian,
+    };
+
+    console.log(appliedFilters);
+  }, [isGlutenFree, isLactoseFree, isVegan, isVegeterian]);
+
+  useEffect(() => {
+    props.navigation.setParams({ save: saveFilters });
+  }, [saveFilters]);
+
   useEffect(() => {
     props.navigation.setOptions({
       headerLeft: () => (
@@ -33,6 +48,18 @@ export default function FiltersScreen(props: IFiltersScreenProps) {
             onPress={() => {
               props.navigation.toggleDrawer();
             }}
+          />
+        </HeaderButtons>
+      ),
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Save"
+            color="#f5f5f5"
+            //@ts-ignore
+            size={25}
+            iconName="md-bookmark-sharp"
+            onPress={() => console.log()}
           />
         </HeaderButtons>
       ),
@@ -96,6 +123,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "80%",
-    paddingVertical: 20
+    paddingVertical: 20,
   },
 });
