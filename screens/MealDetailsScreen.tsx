@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Platform,
+  ScrollView,
+  Image,
+} from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/CustomHeaderButton";
 import { CATEGORIES, MEALS } from "../data/DummyData";
-import Category from "../model/category";
 import Meal from "../model/meal";
 
 export interface IMealDetailsScreenProps {
@@ -51,14 +58,29 @@ export default function MealDetailsScreen(props: IMealDetailsScreenProps) {
     });
   }, [props.navigation]);
 
+  console.log(meal);
+
   return (
-    <View style={styles.screen}>
-      <Text>MealDetails screen</Text>
-      <Button
-        title="Back to categories"
-        onPress={() => props.navigation.popToTop()}
-      />
-    </View>
+    <ScrollView>
+      <Image source={{ uri: meal?.imageUrl }} style={styles.image} />
+      <View style={{ ...styles.rowItem, ...styles.mealDetails }}>
+        <Text>{meal?.duration.toString()} m</Text>
+        <Text>{meal?.complexity.toUpperCase()}</Text>
+        <Text>{meal?.afforability.toUpperCase()}</Text>
+      </View>
+      <Text style={styles.titleText}>Ingredients:</Text>
+      {meal?.ingredient.map((ingredient) => (
+        <View style={styles.item} key={ingredient}>
+          <Text style={styles.stepText}>{ingredient}</Text>
+        </View>
+      ))}
+      <Text style={styles.titleText}>Steps:</Text>
+      {meal?.steps.map((steps) => (
+        <View style={styles.item} key={steps}>
+          <Text style={styles.stepText}>{steps}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
@@ -67,5 +89,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  rowItem: {
+    flexDirection: "row",
+  },
+  mealDetails: {
+    paddingHorizontal: 15,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  titleText: {
+    fontFamily: "open-sans-bold",
+    fontSize: 22,
+    textAlign: "center",
+  },
+  stepText: {
+    textAlign: "justify",
+  },
+  image: {
+    width: "100%",
+    height: 200,
+  },
+  item: {
+    marginHorizontal: 20,
+    marginVertical: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    padding: 10,
   },
 });

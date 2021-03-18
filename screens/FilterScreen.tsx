@@ -1,13 +1,25 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Switch, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/CustomHeaderButton";
+import Colors from "../constants/Colors";
 
 export interface IFiltersScreenProps {
   navigation: any;
 }
 
+export interface IFilterSwitch {
+  label: string;
+  value: boolean;
+  onChange: (value: React.SetStateAction<boolean>) => void;
+}
+
 export default function FiltersScreen(props: IFiltersScreenProps) {
+  const [isGlutenFree, setIsGlutenFree] = useState<boolean>(false);
+  const [isLactoseFree, setIsLactoseFree] = useState<boolean>(false);
+  const [isVegan, setIsVegan] = useState<boolean>(false);
+  const [isVegeterian, setIsVegeterian] = useState<boolean>(false);
+
   useEffect(() => {
     props.navigation.setOptions({
       headerLeft: () => (
@@ -27,11 +39,39 @@ export default function FiltersScreen(props: IFiltersScreenProps) {
     });
   }, [props.navigation]);
 
-  
+  const FilterSwitch = (props: IFilterSwitch) => {
+    return (
+      <View style={styles.filterContainer}>
+        <Text style={styles.label}>{props.label}</Text>
+        <Switch
+          trackColor={{ true: Colors.primaryColor, false: "" }}
+          thumbColor={Platform.OS === "android" ? Colors.primaryColor : ""}
+          value={props.value}
+          onValueChange={(newVal) => props.onChange(newVal)}
+        />
+      </View>
+    );
+  };
 
   return (
     <View style={styles.screen}>
-      <Text>Filters screen</Text>
+      <Text style={styles.title}>Available filters:</Text>
+      <FilterSwitch
+        label="Gluten Free: "
+        value={isGlutenFree}
+        onChange={setIsGlutenFree}
+      />
+      <FilterSwitch
+        label="Lactose Free: "
+        value={isLactoseFree}
+        onChange={setIsLactoseFree}
+      />
+      <FilterSwitch label="Vegan:" value={isVegan} onChange={setIsVegan} />
+      <FilterSwitch
+        label="Vegeterian:"
+        value={isVegeterian}
+        onChange={setIsVegeterian}
+      />
     </View>
   );
 }
@@ -39,7 +79,23 @@ export default function FiltersScreen(props: IFiltersScreenProps) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+  },
+  title: {
+    fontFamily: "open-sans-bold",
+    fontSize: 22,
+    margin: 20,
+    textAlign: "center",
+  },
+  label: {
+    fontFamily: "open-sans",
+    fontSize: 18,
+  },
+  filterContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "80%",
+    paddingVertical: 20
   },
 });
